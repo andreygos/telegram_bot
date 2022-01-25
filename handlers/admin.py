@@ -15,8 +15,8 @@ class FSMAdmin(StatesGroup):
     description = State()
     price = State()
 
-#Установка модератора из админов группы
-#@dp.message_handler(commands=['admin'], is_chat_admin=True)
+#Доступ к админке через группу
+
 async def make_changes_command(message: types.Message):
     global ID
     ID = message.from_user.id
@@ -24,16 +24,16 @@ async def make_changes_command(message: types.Message):
     await message.delete()
 
 
-#Начало диалога загрузки нового пункта меню
-#@dp.message_handler(command='Загрузить', state=None)
+#Первое сообщение
+
 async def cm_start(message: types.Message):
     if message.from_user.id == ID:
         await FSMAdmin.photo.set()
         await message.reply('Загрузи фото')
 
 
-#Ловим первый ответ и пишем в словарь
-#@dp.message_handler(content_types=['photo'], state=FSMAdmin.photo)
+#Добавляем фото 
+
 async def load_photo(message: types.Message, state:FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
@@ -41,9 +41,9 @@ async def load_photo(message: types.Message, state:FSMContext):
         await FSMAdmin.next()
         await message.reply('Теперь введи название')
 
- #Ловим второй ответ
+ #второй ответ
 
-#@dp.message_handler(state=FSMAdmin.name)
+
 async def load_name(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
@@ -51,8 +51,8 @@ async def load_name(message: types.Message, state: FSMContext):
         await FSMAdmin.next()
         await message.reply('Введи описание')
 
-# Ловим третий ответ
-#@dp.message_handler(state=FSMAdmin.description)
+# третий ответ
+
 async def load_description(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
@@ -60,7 +60,7 @@ async def load_description(message: types.Message, state: FSMContext):
         await FSMAdmin.next()
         await message.reply('Теперь укажи цену')
 
-#@dp.message_handler(state=FSMAdmin.price)
+
 async def load_price(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         async with state.proxy() as data:
@@ -72,8 +72,7 @@ async def load_price(message: types.Message, state: FSMContext):
     await state.finish()
 
     #Выход из состояния
-#@dp.message_handler(state="*", commands="отмена")
-#@dp.message_handler(Text(equals="отмена", ignore_case=True), state="*")
+
 async def cancel_handler(message: types.Message, state: FSMContext):
     if message.from_user.id == ID:
         current_state =await state.get_state()
@@ -83,7 +82,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
     await message.reply('OK')
 
 
-
+#регистрация handlers
 def register_handlers_admin(dp : Dispatcher):
     dp.register_message_handler(cm_start, commands=['Загрузить'], state=None)
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMAdmin.photo)

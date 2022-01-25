@@ -1,1 +1,1 @@
-TOKEN = '2107505328:AAGN2FNPXPMj2XCnOhP1pHv8Nnnsl1pebm4'
+TOKEN = 'insert here your token please'

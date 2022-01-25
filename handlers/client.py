@@ -2,17 +2,17 @@ from aiogram import types, Dispatcher
 from create_bot import dp, bot
 from keyboards import kb_client
 
-#@dp.message_handler(commands=['start', 'help'])
+
 async def command_start(message: types.Message):
     await message.answer('Добро пожаловать в HotWings!', reply_markup=kb_client)
 
 
-#@dp.message_handler(commands=['Расположение'])
+
 async def open_locate(message: types.Message):
-    await message.answer('г.Балашиха, ул. Лукино, д.57А')
+    await message.answer('input your adress here!')
 
 
-#@dp.message_handler(commands=['Режим_работы'])
+
 async def open_wings(message: types.Message):
     await message.answer('Вс-Чт с 11-00 до 22-00, Пт-Сб с 10-00 до 23-00')
 
